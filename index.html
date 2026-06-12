@@ -1,0 +1,211 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>林木育种选育仿真实践</title>
+    <link rel="stylesheet" href="styles.css?v=20260612-restore-layout">
+  </head>
+  <body>
+    <section id="program" class="program-workbench" aria-label="林木育种选育仿真实践">
+      <div class="experiment-topbar">
+        <strong>林木育种选育仿真实践</strong>
+        <div>
+          <span id="visitorStats" class="visitor-stats">访问 0 · 学习 0</span>
+          <button id="loginStatusBtn" type="button" class="round-help">游客</button>
+          <button id="adminStatusBtn" type="button" class="round-help">管理员</button>
+          <button class="round-help" type="button">帮助</button>
+          <button id="logoutAllBtn" type="button" class="round-help">退出</button>
+        </div>
+      </div>
+
+      <section class="hero-workspace">
+        <img src="assets/forest-breeding-hero.png" alt="林木育种天然林、苗圃和试验林场景">
+        <div class="hero-overlay">
+          <p class="eyebrow">从天然林与资源群体开始</p>
+          <h2 id="selectedSpeciesName">选择一个植物资源开始仿真</h2>
+          <p id="selectedSpeciesMeta">选择物种后，系统会生成可点击的天然群体候选单株，并按该物种的育种目标显示选优指标。</p>
+        </div>
+      </section>
+
+      <section class="mode-hub" aria-label="实验模块入口">
+        <button class="mode-card" type="button" data-mode="theory">
+          <span class="mode-visual theory-visual" aria-hidden="true"></span>
+          <strong>理论学习</strong>
+        </button>
+        <button class="mode-card" type="button" data-mode="practice">
+          <span class="mode-visual practice-visual" aria-hidden="true"></span>
+          <strong>虚拟实践</strong>
+        </button>
+        <button class="mode-card" type="button" data-mode="exam">
+          <span class="mode-visual exam-visual" aria-hidden="true"></span>
+          <strong>考核模式</strong>
+        </button>
+      </section>
+
+      <div id="courseMenu" class="course-menu" aria-label="选育程序目录"></div>
+
+      <section id="theoryModule" class="learning-module">
+        <div class="module-title">
+          <p class="eyebrow">Theory Learning</p>
+          <h2>林木育种理论学习</h2>
+        </div>
+        <div class="learning-layout">
+          <aside>
+            <h3 class="learning-column-title">教材章节</h3>
+            <div id="theoryList" class="theory-list"></div>
+          </aside>
+          <aside>
+            <h3 class="learning-column-title">本章知识点</h3>
+            <div id="knowledgeList" class="knowledge-list"></div>
+          </aside>
+          <article class="theory-reader">
+            <p id="theoryStepLabel" class="eyebrow">Breeding Knowledge</p>
+            <h2 id="theoryTitle">林木育种程序概述</h2>
+            <div id="chapterTopology" class="chapter-topology"></div>
+            <div id="theoryBody" class="theory-body"></div>
+            <div class="slide-nav">
+              <button id="prevSlideBtn" type="button" class="ghost">上一页</button>
+              <span id="pptProgress">1/1</span>
+              <button id="nextSlideBtn" type="button">下一页</button>
+            </div>
+            <section id="theoryAdminPanel" class="admin-editor hidden-admin" aria-label="管理员理论知识编辑">
+              <div class="admin-editor-head">
+                <h3>管理员编辑</h3>
+                <span id="adminEditStatus">管理员已登录</span>
+              </div>
+              <div class="admin-grid">
+                <label>章节标题<input id="adminChapterTitle" type="text"></label>
+                <label>章节摘要<textarea id="adminChapterSummary" rows="3"></textarea></label>
+                <label>知识点标题<input id="adminPointTitle" type="text"></label>
+                <label>知识点摘要<textarea id="adminPointSummary" rows="3"></textarea></label>
+                <label>拓扑节点（用逗号分隔）<input id="adminPointNodes" type="text"></label>
+                <label>当前页标题<input id="adminSlideTitle" type="text"></label>
+                <label>当前页知识内容<textarea id="adminSlideText" rows="5"></textarea></label>
+                <label>图片地址或 DataURL<input id="adminSlideImageUrl" type="text"></label>
+                <label>上传图片<input id="adminSlideImageFile" type="file" accept="image/*"></label>
+              </div>
+              <div class="admin-actions">
+                <button id="saveTheoryEditBtn" type="button">保存当前知识点</button>
+                <button id="addKnowledgePointBtn" type="button" class="secondary">新增知识点</button>
+                <button id="addTheorySlideBtn" type="button" class="secondary">新增当前知识页</button>
+                <button id="deleteTheorySlideBtn" type="button" class="ghost">删除当前知识页</button>
+                <button id="resetTheoryOverrideBtn" type="button" class="ghost">恢复默认内容</button>
+              </div>
+            </section>
+          </article>
+        </div>
+      </section>
+
+      <section id="practiceModule" class="practice-module hidden-module">
+        <div class="role-strip">
+          <p id="roleStatus">林地调查员 · 准备进入样地</p>
+          <span>测高仪</span><span>胸径尺</span><span>记录板</span>
+        </div>
+        <section id="resources" class="resource-panel resource-dock">
+          <h2>植物资源</h2>
+          <label class="field-label">搜索物种<input id="resourceSearch" type="search" placeholder="输入中文名、学名、科名或地区"></label>
+          <label class="field-label">资源类型<select id="typeFilter"><option value="all">全部资源</option><option value="timber">用材林木</option><option value="fruit">果树经济林</option><option value="oil">油料与香料</option><option value="ornamental">观赏林木</option><option value="medicinal">药用林木</option></select></label>
+          <p class="resource-count"><strong id="resourceCount">0</strong> 个内置资源，可扩展导入完整名录</p>
+          <div id="speciesList" class="species-list" role="listbox" aria-label="可选择植物资源"></div>
+          <section class="import-card"><h3>导入资源 JSON</h3><p>可追加《中国植物物种名录》或 iPlant 清洗后的结构化资源。</p><input id="resourceFile" type="file" accept="application/json,.json"></section>
+        </section>
+        <section class="status-grid" aria-label="仿真状态">
+          <article><p>当前步骤</p><strong id="stageNumber">1</strong></article>
+          <article><p>候选单株</p><strong id="candidateCount">0</strong></article>
+          <article><p>已选优树</p><strong id="eliteCount">0</strong></article>
+          <article><p>预期增益</p><strong id="gainValue">0.00</strong></article>
+        </section>
+        <section class="workflow" aria-label="育种程序步骤">
+          <div id="stepTrack" class="step-track"></div>
+          <div class="workflow-actions">
+            <button id="autoSelectBtn" type="button" class="secondary">按阈值自动预选</button>
+            <button id="retryStageBtn" type="button" class="ghost">重做当前步骤</button>
+            <button id="nextStepBtn" type="button">进入下一步</button>
+            <button id="resetBtn" type="button" class="ghost">重置群体</button>
+          </div>
+        </section>
+        <section class="animation-lab" aria-label="育种过程仿真动画">
+          <div class="section-title compact">
+            <div><p class="eyebrow">Interactive Simulation</p><h2 id="sceneTitle">天然林调查与样地测量</h2></div>
+            <div class="scene-status"><span id="sceneProgress">0/8</span><span id="sceneGate" class="scene-gate">完成操作点后解锁</span></div>
+          </div>
+          <div class="scene-layout">
+            <div id="sceneVisual" class="scene-visual"></div>
+            <aside class="scene-side">
+              <p id="sceneSubtitle">点击动画中的操作点，完成后才能进入下一步。</p>
+              <div id="missionBoard" class="mission-board"></div>
+              <div id="stageBrief" class="stage-brief"></div>
+              <div id="knowledgeEmbed" class="knowledge-embed"></div>
+              <div id="teamDialogue" class="team-dialogue"></div>
+              <div id="sceneActions" class="scene-actions"></div>
+            </aside>
+          </div>
+          <p id="stageNarration" class="stage-narration">请选择步骤开始学习。</p>
+          <p id="stageOutcome" class="stage-outcome"></p>
+        </section>
+        <section class="work-grid">
+          <section class="plot-panel">
+            <div class="section-title compact">
+              <div><p id="plotMode" class="eyebrow">Natural Population</p><h2 id="plotTitle">天然林 / 资源群体</h2></div>
+              <div class="legend"><span><i class="legend-dot"></i>未评价</span><span><i class="legend-dot scored"></i>已评价</span><span><i class="legend-dot elite"></i>入选</span></div>
+            </div>
+            <div id="populationPlot" class="population-plot" aria-label="可点击候选单株"></div>
+          </section>
+          <aside class="selection-panel">
+            <div class="section-title compact"><div><p class="eyebrow">Selection Standard</p><h2>选优参数</h2></div></div>
+            <div id="thresholdControls" class="threshold-controls"></div>
+            <section class="population-builder">
+              <h3>群体与指标录入</h3>
+              <label>群体大小<input id="populationSizeInput" type="number" min="1" max="500"></label>
+              <button id="regeneratePopulationBtn" type="button" class="secondary">按群体大小生成</button>
+              <label>批量输入个体指标（JSON 或 CSV）<textarea id="populationMetricsInput" rows="7" placeholder="CSV示例：&#10;id,treeHeight,dbh,crownWidth,volume&#10;P1-001,23.5,31.2,6.4,0.82"></textarea></label>
+              <button id="applyPopulationMetricsBtn" type="button">导入并计算选择指数</button>
+            </section>
+            <section class="trait-builder">
+              <h3>自主添加选优指标</h3>
+              <label>指标名称<input id="globalTraitName" type="text" placeholder="如 木质素含量、含油率"></label>
+              <label>指标类别<select id="globalTraitCategory"><option value="growth">生长性状</option><option value="quality">品质性状</option><option value="resistance">抗逆抗病</option><option value="custom">自定义</option></select></label>
+              <label>单位<input id="globalTraitUnit" type="text" placeholder="cm、%、mg/g、分"></label>
+              <label>下限阈值<input id="globalTraitThreshold" type="number" step="0.01" value="1"></label>
+              <label>最大参考值<input id="globalTraitMax" type="number" step="0.01" value="10"></label>
+              <label>权重<input id="globalTraitWeight" type="number" step="0.01" value="0.08"></label>
+              <button id="addGlobalTraitBtn" type="button" class="secondary">加入当前物种指标</button>
+            </section>
+            <section><h3>当前选择指数</h3><div id="weightBars" class="weight-bars"></div></section>
+          </aside>
+        </section>
+        <section class="table-panel"><div class="section-title compact"><div><p class="eyebrow">Elite Trees</p><h2>入选材料</h2></div><button id="exportBtn" type="button" class="ghost">导出记录</button></div><table><thead><tr><th>编号</th><th>阶段</th><th>综合指数</th><th>核心优势</th></tr></thead><tbody id="eliteTable"></tbody></table></section>
+      </section>
+
+      <section id="examModule" class="exam-module hidden-module">
+        <h2>考核模式</h2>
+        <p>按顺序完成全部育种程序，不可跳过当前步骤。每一步需完成动画操作点，并在候选群体中完成优树选择或材料确认。</p>
+        <button id="examStartBtn" type="button">开始考核</button>
+      </section>
+
+      <section id="records" class="record-panel">
+        <div class="section-title compact"><div><p class="eyebrow">Simulation Log</p><h2>仿真记录</h2></div><button id="clearLogBtn" type="button" class="ghost">清空记录</button></div>
+        <ul id="recordList" class="record-list"></ul>
+        <section id="loginRecordPanel" class="login-record-panel" hidden></section>
+      </section>
+    </section>
+
+    <dialog id="candidateDialog" class="candidate-dialog">
+      <form id="candidateForm" method="dialog">
+        <h2 id="dialogTitle">候选单株参数</h2>
+        <div id="candidateFields" class="candidate-fields"></div>
+        <section class="custom-trait-inline"><h3>增加单株指标</h3><label>指标名称<input id="customTraitName" type="text" placeholder="如 芳樟醇含量、单株鲜重"></label><label>单位<input id="customTraitUnit" type="text" placeholder="%、mg/g、分"></label><label>当前值<input id="customTraitValue" type="number" step="0.01" placeholder="输入该候选单株数值"></label><label>权重<input id="customTraitWeight" type="number" step="0.01" value="0.08"></label><button id="addCustomTraitBtn" type="button" class="secondary">加入指标</button></section>
+        <p class="dialog-score">当前综合指数 <strong id="dialogScore">0.00</strong></p>
+        <menu class="dialog-actions"><button value="cancel" type="button" class="ghost" onclick="candidateDialog.close()">取消</button><button id="saveCandidateBtn" value="default" type="button">保存并入选</button></menu>
+      </form>
+    </dialog>
+
+    <dialog id="loginDialog" class="login-dialog"><form method="dialog" id="loginForm"><div class="dialog-head"><div><p class="eyebrow">WeChat Verification</p><h2>访问人员登录</h2></div></div><p class="login-note">当前为静态网页演示版：可记录微信昵称 / OpenID 模拟账号。正式部署到服务器后可接入微信 OAuth 与后台数据库。</p><label>微信昵称<input id="wechatName" type="text" required placeholder="请输入微信昵称"></label><label>微信账号 / OpenID<input id="wechatAccount" type="text" required placeholder="请输入微信号或 OpenID"></label><menu class="dialog-actions"><button id="guestLoginBtn" value="cancel" type="button" class="ghost">游客进入</button><button id="wechatLoginBtn" value="default" type="button">验证登录</button></menu></form></dialog>
+    <dialog id="adminDialog" class="login-dialog"><form id="adminForm" onsubmit="loginAdmin(event); return false;"><div class="dialog-head"><div><p class="eyebrow">Administrator</p><h2>管理员登录</h2></div></div><p class="login-note">静态演示版提供本地管理员入口。正式上线后请改为服务器后台认证。</p><label>管理员账号<input id="adminName" type="text" required placeholder="admin"></label><label>管理员密码<input id="adminPassword" type="password" required placeholder="请输入管理员密码"></label><p id="adminLoginFeedback" class="login-feedback" role="status"></p><menu class="dialog-actions"><button id="adminLogoutBtn" value="cancel" type="button" class="ghost">退出管理员</button><button id="adminLoginBtn" value="default" type="submit" onclick="loginAdmin(event)">登录管理</button></menu></form></dialog>
+
+    <script src="species-data.js?v=20260612-restore-layout"></script>
+    <script src="ppt-content.js?v=20260612-restore-layout"></script>
+    <script src="script.js?v=20260612-restore-layout"></script>
+  </body>
+</html>
